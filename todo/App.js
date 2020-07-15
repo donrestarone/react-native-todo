@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, TextInput, Button, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
 
 export default function App() {
   let [goal, setGoal] = useState('')
@@ -10,8 +10,17 @@ export default function App() {
     setGoals(currentGoals => [...currentGoals, {value: goal, key: Math.random().toString() }])
   }
 
+  function deleteGoalHandler(key) {
+    let removedFromList = goals.filter(g => g.key != key)
+    setGoals([...removedFromList])
+  }
+
   function renderGoals(goal) {
-    return <Text style={styles.goal}>{goal.item.value}</Text>
+    return (
+      <TouchableOpacity onPress={() => {deleteGoalHandler(goal.item.key)}}>
+        <Text style={styles.goal}>{goal.item.value}</Text>
+      </TouchableOpacity>
+    )
   }
 
   return (
