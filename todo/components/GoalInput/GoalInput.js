@@ -14,7 +14,14 @@ export default function GoalInput(props) {
     <Modal style={styles.modal} visible={props.visible} animationType='slide'>
       <View style={styles.inputGroup}>
         <TextInput value={goal} onChangeText={(input) => { setGoal(input) }} placeholder="enter goal" style={styles.input}/>
-        <Button onPress={() => {props.onCreate(goal)} } title="Add"/>
+        <View style={styles.buttonGroup}>
+          <View style={styles.button}>
+            <Button onPress={() => {props.onCreate(goal)} } title="Add"/>
+          </View>
+          <View style={styles.button}>
+            <Button onPress={props.onCancel} title="Cancel" color="red"/>
+          </View>
+        </View>
       </View>
     </Modal>
   );
@@ -33,7 +40,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1
   },
-  modal: {
-
+  buttonGroup: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '50%'
+  },
+  button: {
+    padding: 10
   }
 });

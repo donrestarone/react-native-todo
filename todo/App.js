@@ -28,6 +28,7 @@ export default function App() {
       <Button title={'Add Goal'} onPress={() => {setInputModalVisible(!inputModalVisible)}}/>
       <GoalInput
         onCreate={addGoalHandler}
+        onCancel={() => {setInputModalVisible(false)}}
         visible={inputModalVisible}
       />
       <View style={styles.goalList}>
