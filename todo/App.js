@@ -1,12 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, FlatList, Button } from 'react-native';
+import GoalInput from './components/GoalInput/GoalInput'
+import Goal from './components/Goal/Goal'
 
 export default function App() {
-  let [goal, setGoal] = useState('')
   let [goals, setGoals] = useState([])
+  let [inputModalVisible, setInputModalVisible] = useState(false)
 
-  function addGoalHandler() {
+  function addGoalHandler(goal) {
+    setInputModalVisible(false)
     setGoals(currentGoals => [...currentGoals, {value: goal, key: Math.random().toString() }])
   }
 
@@ -17,22 +19,23 @@ export default function App() {
 
   function renderGoals(goal) {
     return (
-      <TouchableOpacity onPress={() => {deleteGoalHandler(goal.item.key)}}>
-        <Text style={styles.goal}>{goal.item.value}</Text>
-      </TouchableOpacity>
+      <Goal goal={goal} onDelete={deleteGoalHandler}/>
     )
   }
 
   return (
     <View style={styles.container}>
-      <View style={styles.inputGroup}>
-        <TextInput value={goal} onChangeText={(input) => { setGoal(input) }} placeholder="enter goal" style={styles.input}/>
-        <Button onPress={addGoalHandler} title="Add"/>
-      </View>
-      <FlatList
-        data={goals}
-        renderItem={(goal) => {return renderGoals(goal)}}
+      <Button title={'Add Goal'} onPress={() => {setInputModalVisible(!inputModalVisible)}}/>
+      <GoalInput
+        onCreate={addGoalHandler}
+        visible={inputModalVisible}
       />
+      <View style={styles.goalList}>
+        <FlatList
+          data={goals}
+          renderItem={(goal) => {return renderGoals(goal)}}
+        />
+      </View>
     </View>
   );
 }
@@ -61,5 +64,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'gray',
     borderColor: 'black',
     borderWidth: 1
+  },
+  goalList: {
+    width: '100%',
+    padding: 30
   }
 });
